@@ -6,8 +6,9 @@ import { auth } from "../../middleware/checkAuth";
 const router = Router();
 router.get("/", DestinationController.getAllDestinations);
 router.get("/my", auth(Role.ADMIN, Role.USER), DestinationController.getMyDestinations);
-
-
+router.get("/:id/related", DestinationController.getRelatedDestinations);
+router.get("/:id", DestinationController.getDestinationById);
+ 
 
 
 

@@ -100,7 +100,44 @@ const getMyDestinations = async (userId: string) => {
   });
 };
 
+const getDestinationById = async (idOrSlug: string) => {
+  const destination = await prisma.destination.findFirst({
+    where: { OR: [{ id: idOrSlug }, { slug: idOrSlug }] },
+    include: {
+      createdBy: { select: { id: true, name: true } },
+    },
+  });
+
+  if (!destination) {
+    throw new AppError(httpStatus.NOT_FOUND, "Destination Not Found");
+  }
+
+  return destination;
+};
+
+const getRelatedDestinations = async (idOrSlug: string) => {
+  const current = await prisma.destination.findFirst({
+    where: { OR: [{ id: idOrSlug }, { slug: idOrSlug }] },
+    select: { id: true, category: true, country: true },
+  });
+
+  if (!current) {
+    throw new AppError(httpStatus.NOT_FOUND, "Destination Not Found");
+  }
+
+  return prisma.destination.findMany({
+    where: {
+      id: { not: current.id },
+      OR: [{ category: current.category }, { country: current.country }],
+    },
+    orderBy: { createdAt: "desc" },
+    take: 3,
+  });
+};
+
 export const DestinationService = {
   getAllDestinations,
   getMyDestinations,
+  getDestinationById,
+  getRelatedDestinations,
 };
