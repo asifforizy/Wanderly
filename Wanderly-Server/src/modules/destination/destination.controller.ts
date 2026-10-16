@@ -43,8 +43,11 @@ const getDestinationById = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getRelatedDestinations = catchAsync(async (req: Request, res: Response) => {
-    const result = await DestinationService.getRelatedDestinations(req.params.id as string );
+const getRelatedDestinations = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await DestinationService.getRelatedDestinations(
+      req.params.id as string
+    );
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -55,9 +58,23 @@ const getRelatedDestinations = catchAsync(async (req: Request, res: Response) =>
   }
 );
 
+const createDestination = catchAsync(async (req: Request, res: Response) => {
+  const result = await DestinationService.createDestination(
+    req.user!.userId,
+    req.body
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.CREATED,
+    success: true,
+    message: "Destination Created Successfully",
+    data: result,
+  });
+});
 export const DestinationController = {
   getAllDestinations,
   getMyDestinations,
   getDestinationById,
   getRelatedDestinations,
+  createDestination,
 };

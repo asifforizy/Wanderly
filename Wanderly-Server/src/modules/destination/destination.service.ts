@@ -5,7 +5,10 @@ import {
 } from "../../../prisma/generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 import { AppError } from "../../utils/AppError";
-import { IDestinationQuery } from "./destination.interface";
+import {
+  ICreateDestinationPayload,
+  IDestinationQuery,
+} from "./destination.interface";
 import httpStatus from "http-status";
 
 const BUDGET_RANGES: Record<string, Prisma.IntFilter> = {
@@ -135,9 +138,23 @@ const getRelatedDestinations = async (idOrSlug: string) => {
   });
 };
 
+const createDestination = async (userId: string,payload: ICreateDestinationPayload) => {
+  const slug = await generateUniqueSlug(payload.name, payload.country);
+
+  return prisma.destination.create({
+    data: {
+      ...payload,
+      slug,
+      isSeed: false,
+      createdById: userId,
+    },
+  });
+};
+
 export const DestinationService = {
   getAllDestinations,
   getMyDestinations,
   getDestinationById,
   getRelatedDestinations,
+  createDestination,
 };
