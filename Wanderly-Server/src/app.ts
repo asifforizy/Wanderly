@@ -37,8 +37,14 @@ app.use(
   })
 );
 
+app.use("/api/v1/auth", AuthRoutes);
+
+
+
+
+
 app.get("/", async (req: Request, res: Response) => {
-  res.send("RentNest");
+  res.send("wanderly server is running");
 });
 
 
