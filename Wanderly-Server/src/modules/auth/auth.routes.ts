@@ -13,5 +13,6 @@ router.post("/register",validateRequest(UserValidation.UserRegistrationZodSchema
 router.post("/verify-email",validateRequest(UserValidation.UserEmailVerifyZodSchema),AuthController.verifyUserEmail,);
 router.post("/login",validateRequest(UserValidation.LoginZodSchema),AuthController.loginUser,);
 router.get("/me",auth(Role.ADMIN,  Role.USER),AuthController.getMe,)
+router.post("/refresh-token", AuthController.refreshToken);
 
 export const AuthRoutes = router;
