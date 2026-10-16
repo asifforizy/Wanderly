@@ -17,3 +17,10 @@ export interface IVerifyEmailPayload {
 }
 
 
+
+export interface ILoginUserPayload {
+	email: string;
+	password: string;
+}
+
+

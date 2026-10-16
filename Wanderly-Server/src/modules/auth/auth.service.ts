@@ -3,7 +3,11 @@ import { AppError } from "../../utils/AppError";
 import httpStatus from "http-status";
 import bcrypt from "bcryptjs";
 import config from "../../config";
-import { IRegisterUsersPayload, IVerifyEmailPayload } from "./auth.interface";
+import {
+  ILoginUserPayload,
+  IRegisterUsersPayload,
+  IVerifyEmailPayload,
+} from "./auth.interface";
 import { redisClient } from "../../lib/redis";
 import ejs from "ejs";
 import path from "path";
@@ -193,7 +197,68 @@ const verifyUsersEmail = async (payload: IVerifyEmailPayload) => {
   return {
     user,
     registerUser,
-    accessToken, 
+    accessToken,
+    refreshToken,
+  };
+};
+
+const loginUser = async (payload: ILoginUserPayload) => {
+  const { password } = payload;
+  const email = payload.email.trim().toLowerCase();
+
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User Not Found");
+  }
+
+  if (user.status === UserStatus.BLOCKED) {
+    throw new AppError(httpStatus.FORBIDDEN, "User is blocked");
+  }
+
+  if (user.isDeleted || user.status === UserStatus.DELETED) {
+    throw new AppError(httpStatus.FORBIDDEN, "User is deleted");
+  }
+
+  if (user.password === null && user.googleId !== null) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "User Already Has Account Registered With Google. Try To Login With Google."
+    );
+  }
+
+  const isPasswordMatched = await bcrypt.compare(
+    password,
+    user.password as string
+  );
+
+  if (!isPasswordMatched) {
+    throw new AppError(httpStatus.UNAUTHORIZED, "Invalid credentials");
+  }
+
+  const jwtPayload = {
+    userId: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  };
+
+  const accessToken = jwtUtils.createToken(
+    jwtPayload,
+    config.jwt_access_secret,
+    config.jwt_access_expires_in as SignOptions
+  );
+
+  const refreshToken = jwtUtils.createToken(
+    jwtPayload,
+    config.jwt_refresh_secret,
+    config.jwt_refresh_expires_in as SignOptions
+  );
+
+  return {
+    accessToken,
     refreshToken,
   };
 };
@@ -201,4 +266,6 @@ const verifyUsersEmail = async (payload: IVerifyEmailPayload) => {
 export const AuthService = {
   registerUsers,
   verifyUsersEmail,
+  loginUser,  
 };
+ 
