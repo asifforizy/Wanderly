@@ -4,6 +4,8 @@ import config from "./config";
 import cors from 'cors';
 import { notFound } from "./middleware/notFound";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
+import { AuthRoutes } from "./modules/auth/auth.routes";
+
 
 
 

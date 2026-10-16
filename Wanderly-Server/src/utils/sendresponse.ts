@@ -1,34 +1,26 @@
-import jwt, { type JwtPayload, type SignOptions } from "jsonwebtoken";
+import type { Response } from "express";
 
-const createToken = (
-	payload: JwtPayload,
-	secret: string,
-	expiresIn: SignOptions,
-) => {
-	const token = jwt.sign(payload, secret, {
-		expiresIn,
-	} as SignOptions);
-
-	return token;
+type TMeta = {
+	page: number;
+	limit: number;
+	total: number;
+	totalPages: number;
 };
 
-const verifyToken = (token: string, secret: string) => {
-	try {
-		const verifiedToken = jwt.verify(token, secret);
-		return {
-			success: true,
-			data: verifiedToken,
-		};
-	} catch (error: any) {
-		console.log("Token verification failed:", error);
-		return {
-			success: false,
-			error: error.message,
-		};
-	}
+type TResponseData<T> = {
+	success: boolean;
+	statusCode: number;
+	message: string;
+	data: T;
+	meta?: TMeta;
 };
 
-export const jwtUtils = {
-	createToken,
-	verifyToken,
+export const sendResponse = <T>(res: Response, data: TResponseData<T>) => {
+	res.status(data.statusCode).json({
+		success: data.success,
+		statusCode: data.statusCode,
+		message: data.message,
+		data: data.data,
+		meta: data.meta,
+	});
 };
