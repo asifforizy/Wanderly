@@ -13,3 +13,13 @@ enum UserStatus {
   BLOCKED
   DELETED
 }
+
+
+enum DestinationCategory {
+  BEACH
+  MOUNTAINS
+  NATURE
+  CULTURAL
+  COASTAL
+  CITY
+}

@@ -1,0 +1,33 @@
+
+
+model Destination {
+  id   String @id @default(cuid())
+  slug String @unique
+
+  name                String
+  country             String
+  location            String
+  shortDescription    String
+  fullDescription     String              @db.Text
+  category            DestinationCategory
+  estimatedBudget     Int
+  currency            String              @default("USD")
+  bestTimeToVisit     String
+  recommendedDuration String
+  activities          String[]
+  travelTips          String[]
+  imageUrl            String
+  isSeed Boolean @default(false)
+  createdById String?
+  createdBy   User?   @relation(fields: [createdById], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([country])
+  @@index([estimatedBudget])
+  @@index([createdById, createdAt])
+  @@map("destinations")
+}
+

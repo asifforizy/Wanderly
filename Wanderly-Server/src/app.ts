@@ -5,6 +5,7 @@ import cors from 'cors';
 import { notFound } from "./middleware/notFound";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
 import { AuthRoutes } from "./modules/auth/auth.routes";
+import { DestinationRoutes } from "./modules/destination/destination.routes";
 
 
 
@@ -40,6 +41,7 @@ app.use(
 );
 
 app.use("/api/v1/auth", AuthRoutes);
+app.use("/api/v1/destinations", DestinationRoutes);
 
 
 
