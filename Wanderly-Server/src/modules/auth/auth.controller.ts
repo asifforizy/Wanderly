@@ -3,6 +3,8 @@ import httpStatus from "http-status";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendresponse";
 import { AuthService } from "./auth.service";
+import { IRequestUser } from "./auth.interface";
+import { AppError } from "../../utils/AppError";
 
 const registerUser = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
@@ -78,8 +80,31 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+
+
+
+const getMe = catchAsync(async (req: Request, res: Response) => {
+  const user = req.user as unknown as IRequestUser;
+
+  if (!user) {
+    throw new AppError(
+      httpStatus.UNAUTHORIZED,
+      "User information is missing in the request"
+    );
+  }
+
+  const result = await AuthService.getMe(user);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User profile fetched successfully",
+    data: result,
+  });
+});
+
 export const AuthController = {
   registerUser,
   verifyUserEmail,
   loginUser,
+  getMe,
 };

@@ -6,6 +6,7 @@ import config from "../../config";
 import {
   ILoginUserPayload,
   IRegisterUsersPayload,
+  IRequestUser,
   IVerifyEmailPayload,
 } from "./auth.interface";
 import { redisClient } from "../../lib/redis";
@@ -263,9 +264,36 @@ const loginUser = async (payload: ILoginUserPayload) => {
   };
 };
 
+
+
+const getMe = async (user: IRequestUser) => {
+  const isUserExists = await prisma.user.findUnique({
+    where: {
+      id: user.userId,
+    },
+    include: {
+      registerUser: true,
+    },
+    omit: {
+      password: true,
+    },
+  });
+
+  if (!isUserExists) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  return isUserExists;
+};
+
+
+
+
+
 export const AuthService = {
   registerUsers,
   verifyUsersEmail,
   loginUser,  
+  getMe,
 };
  

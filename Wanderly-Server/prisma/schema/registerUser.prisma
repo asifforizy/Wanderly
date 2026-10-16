@@ -1,4 +1,4 @@
-model RegisterUsaers {
+model RegisterUsers {
   id String @id @default(uuid(7))
 
   name          String
