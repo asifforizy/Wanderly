@@ -30,7 +30,7 @@ const registerKids = async (payload: IRegisterUsersPayload) => {
 
   const expirationSeconds = 5 * 60;
 
-  const otpKey = `kids-registration-otp:${email}`;
+  const otpKey = `user-registration-otp:${email}`;
   const otpValue = randomInt(100000, 1000000).toString();
 
 
@@ -41,7 +41,7 @@ const registerKids = async (payload: IRegisterUsersPayload) => {
     },
   });
 
-  const kidsRegistrationKey = `kids-registration-data:${email}`;
+  const kidsRegistrationKey = `user-registration-data:${email}`;
   const redisUserDataPayload = {
     name,
     email,
@@ -61,7 +61,7 @@ const registerKids = async (payload: IRegisterUsersPayload) => {
 
   const tempatePath = path.join(
     process.cwd(),
-    "/src/templates/registration-user-otp.ejs",
+    "/src/templates/registration-user-otp.ejs", 
   );
 
   const templateData = {
