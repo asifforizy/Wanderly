@@ -93,11 +93,14 @@ const getAllDestinations = async (query: IDestinationQuery) => {
   };
 };
 
-
-
-
+const getMyDestinations = async (userId: string) => {
+  return prisma.destination.findMany({
+    where: { createdById: userId, isSeed: false },
+    orderBy: { createdAt: "desc" },
+  });
+};
 
 export const DestinationService = {
   getAllDestinations,
-
+  getMyDestinations,
 };

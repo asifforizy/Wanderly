@@ -22,6 +22,19 @@ const getAllDestinations = catchAsync(async (req: Request, res: Response) => {
 
 
 
+const getMyDestinations = catchAsync(async (req: Request, res: Response) => {
+  const result = await DestinationService.getMyDestinations(req.user!.userId);
+ 
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Your Destinations Retrieved Successfully",
+    data: result,
+  });
+});
+
+
 export const DestinationController = {
     getAllDestinations,
+    getMyDestinations,
 };
