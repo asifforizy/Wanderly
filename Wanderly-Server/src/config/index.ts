@@ -10,6 +10,7 @@ export default {
     node_env: process.env.NODE_ENV || "development",
     port: process.env.PORT ,
     database_url : process.env.DATABASE_URL,
+    google_client_id: process.env.GOOGLE_CLIENT_ID!,
     app_url : process.env.APP_URL ,
     bycrypt_salt : process.env.BYCRYPT_SALT,
     jwt_access_secret: process.env.JWT_ACCESS_SECRET!,
