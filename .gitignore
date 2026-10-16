@@ -2,7 +2,7 @@
 Wanderly-Server/node_modules/
 Wanderly-Server/dist/
 Wanderly-Server/.env
-Wanderly-Server/prisma/generated/
+Wanderly-Server/prisma/generated/prisma/
 
 # Client
 Wanderly-Client/node_modules/
