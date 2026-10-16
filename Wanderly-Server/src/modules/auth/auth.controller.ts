@@ -130,8 +130,6 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-
-
 const googleLogin = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
   const result = await AuthService.googleLogin(payload);
@@ -161,8 +159,43 @@ const googleLogin = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
- 
+const forgotPassword = catchAsync(async (req: Request, res: Response) => {
+  const payload = req.body;
 
+  await AuthService.forgotPassword(payload);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: `OTP Sent To Email : ${payload.email}`,
+    data: null,
+  });
+});
+
+const resetPassword = catchAsync(async (req: Request, res: Response) => {
+  const payload = req.body;
+
+  await AuthService.resetPassword(payload);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Password Changed Successfully",
+    data: null,
+  });
+});
+
+const logout = catchAsync(async (req: Request, res: Response) => {
+  res.clearCookie("accessToken");
+  res.clearCookie("refreshToken");
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User logged out successfully",
+    data: null,
+  });
+});
 
 export const AuthController = {
   registerUser,
@@ -171,4 +204,7 @@ export const AuthController = {
   getMe,
   refreshToken,
   googleLogin,
-}; 
+  forgotPassword,
+  resetPassword,
+  logout,
+};
