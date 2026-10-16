@@ -8,6 +8,7 @@ import { AppError } from "../../utils/AppError";
 import {
   ICreateDestinationPayload,
   IDestinationQuery,
+  IUpdateDestinationPayload,
 } from "./destination.interface";
 import httpStatus from "http-status";
 
@@ -138,7 +139,7 @@ const getRelatedDestinations = async (idOrSlug: string) => {
   });
 };
 
-const createDestination = async (userId: string,payload: ICreateDestinationPayload) => {
+const createDestination = async ( userId: string, payload: ICreateDestinationPayload) => {
   const slug = await generateUniqueSlug(payload.name, payload.country);
 
   return prisma.destination.create({
@@ -151,10 +152,51 @@ const createDestination = async (userId: string,payload: ICreateDestinationPaylo
   });
 };
 
+const updateDestination = async (id: string,userId: string,payload: IUpdateDestinationPayload) => {
+  const destination = await prisma.destination.findUnique({ where: { id } });
+
+  if (!destination) {
+    throw new AppError(httpStatus.NOT_FOUND, "Destination Not Found");
+  }
+
+  if (destination.isSeed || destination.createdById !== userId) {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "You Can Only Edit Your Own Destinations"
+    );
+  }
+
+  return prisma.destination.update({
+    where: { id },
+    data: payload,
+  });
+};
+
+const deleteDestination = async (id: string, userId: string) => {
+  const destination = await prisma.destination.findUnique({ where: { id } });
+
+  if (!destination) {
+    throw new AppError(httpStatus.NOT_FOUND, "Destination Not Found");
+  }
+
+  if (destination.isSeed || destination.createdById !== userId) {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "You Can Only Delete Your Own Destinations"
+    );
+  }
+
+  await prisma.destination.deleteMany({
+    where: { id, createdById: userId, isSeed: false },
+  });
+};
+
 export const DestinationService = {
   getAllDestinations,
   getMyDestinations,
   getDestinationById,
   getRelatedDestinations,
   createDestination,
+  updateDestination,
+  deleteDestination,
 };

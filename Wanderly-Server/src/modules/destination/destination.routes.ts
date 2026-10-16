@@ -11,8 +11,8 @@ router.get("/my", auth(Role.ADMIN, Role.USER), DestinationController.getMyDestin
 router.get("/:id/related", DestinationController.getRelatedDestinations);
 router.get("/:id", DestinationController.getDestinationById);
 router.post("/",  auth(Role.ADMIN, Role.USER),validateRequest(DestinationValidation.createDestinationZodSchema),DestinationController.createDestination,);
-
-
+router.patch("/:id",auth(Role.ADMIN, Role.USER),validateRequest(DestinationValidation.updateDestinationZodSchema),DestinationController.updateDestination,);
+router.delete("/:id", auth(Role.ADMIN, Role.USER), DestinationController.deleteDestination);
 
 
 export const DestinationRoutes = router;

@@ -71,10 +71,46 @@ const createDestination = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+
+const updateDestination = catchAsync(async (req: Request, res: Response) => {
+  const result = await DestinationService.updateDestination(
+    req.params.id as string,
+    req.user!.userId,
+    req.body,
+  );
+ 
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Destination Updated Successfully",
+    data: result,
+  });
+});
+
+
+const deleteDestination = catchAsync(async (req: Request, res: Response) => {
+  await DestinationService.deleteDestination(
+    req.params.id as string,
+    req.user!.userId,
+  );
+ 
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Destination Deleted Successfully",
+    data: null,
+  });
+});
+ 
+
+
 export const DestinationController = {
   getAllDestinations,
   getMyDestinations,
   getDestinationById,
   getRelatedDestinations,
   createDestination,
+    updateDestination,
+    deleteDestination,
 };
