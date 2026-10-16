@@ -1,0 +1,21 @@
+# Server
+Wanderly-Server/node_modules/
+Wanderly-Server/dist/
+Wanderly-Server/.env
+Wanderly-Server/prisma/generated/
+
+# Client
+Wanderly-Client/node_modules/
+Wanderly-Client/dist/
+Wanderly-Client/.env
+
+# Root
+
+**/node_modules/
+**/.env/
+
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
