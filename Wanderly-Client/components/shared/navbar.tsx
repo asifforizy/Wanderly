@@ -29,7 +29,7 @@ import { ModeToggle } from '@/service/mode-toggle'
 
 const navItems = [
   { label: 'Home', href: '/' },
-  { label: 'Properties', href: '/properties' },
+  { label: 'Destinations', href: '/destinations' },
   { label: 'About', href: '/about' },
   { label: 'Services', href: '/services' },
   { label: 'Contact', href: '/contact' },
