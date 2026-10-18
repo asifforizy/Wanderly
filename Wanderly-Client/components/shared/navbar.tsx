@@ -66,7 +66,7 @@ export function Navbar({ user }: NavbarProps) {
       await logout()
       toast.success('User Logged Out Successfully!')
       setMobileOpen(false)
-      router.push('/auth/login')
+      router.push('/login')
       router.refresh()
     } catch (error) {
       toast.error('Failed to logout')
