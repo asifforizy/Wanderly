@@ -116,7 +116,7 @@ export function Navbar({ user }: NavbarProps) {
                         : pathname.startsWith(item.href)
 
                     return (
-                      <SheetClose  key={item.href}>
+                      <SheetClose key={item.href}>
                         <Link
                           href={item.href}
                           className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${isActive
