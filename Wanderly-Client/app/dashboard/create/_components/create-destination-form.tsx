@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 import { createDestination } from "../_action/create-destination";
-import { CreateDestinationSchema, CreateDestinationValues } from "@/lib/validation";
+import { CreateDestinationSchema, CreateDestinationValues, DESTINATION_CATEGORIES } from "@/lib/validation";
 
 
 function Field({
@@ -48,6 +48,12 @@ function Field({
     );
 }
 
+const toList = (text: string) =>
+    text
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean);
+
 export function CreateDestinationForm() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
@@ -56,16 +62,22 @@ export function CreateDestinationForm() {
         resolver: zodResolver(CreateDestinationSchema),
         defaultValues: {
             name: "",
-            description: "",
             country: "",
-            city: "",
-            price: "",
+            location: "",
+            shortDescription: "",
+            fullDescription: "",
+            category: "",
+            estimatedBudget: "",
+            currency: "USD",
+            bestTimeToVisit: "",
+            recommendedDuration: "",
+            activities: "",
+            travelTips: "",
             imageUrl: "",
         },
     });
 
     const { errors } = form.formState;
-    const descriptionLength = form.watch("description").length;
 
     const onSubmit = async (values: CreateDestinationValues) => {
         try {
@@ -73,11 +85,18 @@ export function CreateDestinationForm() {
 
             const result = await createDestination({
                 name: values.name,
-                description: values.description,
                 country: values.country,
-                city: values.city,
-                price: values.price ? Number(values.price) : undefined,
-                imageUrl: values.imageUrl || undefined,
+                location: values.location,
+                shortDescription: values.shortDescription,
+                fullDescription: values.fullDescription,
+                category: values.category,
+                estimatedBudget: Number(values.estimatedBudget),
+                currency: values.currency,
+                bestTimeToVisit: values.bestTimeToVisit,
+                recommendedDuration: values.recommendedDuration,
+                activities: toList(values.activities),
+                travelTips: toList(values.travelTips),
+                imageUrl: values.imageUrl,
             });
 
             if (!result.success) {
@@ -105,102 +124,101 @@ export function CreateDestinationForm() {
             </div>
 
             <form
-                onSubmit={form.handleSubmit(onSubmit, () =>
-                    toast.error("Please fix the form errors")
-                )}
+                onSubmit={form.handleSubmit(onSubmit, (errs) => {
+                    console.log("Validation errors:", errs);
+                    const first = Object.entries(errs)[0];
+                    toast.error(`${first?.[0]}: ${first?.[1]?.message ?? "invalid"}`);
+                })}
             >
                 <div className="space-y-6 px-6 py-6">
-                    {/* Details */}
                     <div className="grid gap-4 sm:grid-cols-2">
-                        <Field
-                            label="Name"
-                            htmlFor="name"
-                            error={errors.name?.message}
-                            className="sm:col-span-2"
-                        >
-                            <Input
-                                id="name"
-                                placeholder="Cox's Bazar Beach"
-                                {...form.register("name")}
-                            />
+                        <Field label="Name" htmlFor="name" error={errors.name?.message} className="sm:col-span-2">
+                            <Input id="name" placeholder="Cox's Bazar Beach" {...form.register("name")} />
                         </Field>
 
                         <Field label="Country" htmlFor="country" error={errors.country?.message}>
-                            <Input
-                                id="country"
-                                placeholder="Bangladesh"
-                                {...form.register("country")}
-                            />
+                            <Input id="country" placeholder="Bangladesh" {...form.register("country")} />
                         </Field>
 
-                        <Field label="City" htmlFor="city" error={errors.city?.message}>
-                            <Input
-                                id="city"
-                                placeholder="Cox's Bazar"
-                                {...form.register("city")}
-                            />
+                        <Field label="Location" htmlFor="location" error={errors.location?.message}>
+                            <Input id="location" placeholder="Cox's Bazar" {...form.register("location")} />
                         </Field>
 
-                        <Field
-                            label="Description"
-                            htmlFor="description"
-                            error={errors.description?.message}
-                            className="sm:col-span-2"
-                        >
-                            <Textarea
-                                id="description"
-                                rows={4}
-                                placeholder="Describe the place, best time to visit, things to do..."
-                                {...form.register("description")}
-                            />
-                            <p className="text-right text-xs text-muted-foreground">
-                                {descriptionLength} / 2000
-                            </p>
+                        <Field label="Category" htmlFor="category" error={errors.category?.message}>
+                            <select
+                                id="category"
+                                className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                {...form.register("category")}
+                            >
+                                <option value="">Select category</option>
+                                {DESTINATION_CATEGORIES.map((c) => (
+                                    <option key={c} value={c}>
+                                        {c.charAt(0) + c.slice(1).toLowerCase()}
+                                    </option>
+                                ))}
+                            </select>
+                        </Field>
+
+                        <Field label="Image URL" htmlFor="imageUrl" error={errors.imageUrl?.message}>
+                            <Input id="imageUrl" placeholder="https://example.com/photo.jpg" {...form.register("imageUrl")} />
                         </Field>
                     </div>
 
                     <div className="border-t" />
 
-                    {/* Optional */}
-                    <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="grid gap-4">
                         <Field
-                            label="Price (USD)"
-                            htmlFor="price"
-                            error={errors.price?.message}
-                            hint="Optional"
+                            label="Short description"
+                            htmlFor="shortDescription"
+                            error={errors.shortDescription?.message}
+                            hint="One or two sentences shown on cards."
                         >
+                            <Input id="shortDescription" {...form.register("shortDescription")} />
+                        </Field>
+
+                        <Field label="Full description" htmlFor="fullDescription" error={errors.fullDescription?.message}>
+                            <Textarea id="fullDescription" rows={4} {...form.register("fullDescription")} />
+                        </Field>
+                    </div>
+
+                    <div className="border-t" />
+
+                    <div className="grid gap-4 sm:grid-cols-2">
+                        <Field label="Estimated budget" htmlFor="estimatedBudget" error={errors.estimatedBudget?.message}>
                             <Input
-                                id="price"
+                                id="estimatedBudget"
                                 type="number"
                                 min="0"
                                 step="any"
-                                placeholder="100"
-                                {...form.register("price")}
+                                placeholder="300"
+                                {...form.register("estimatedBudget")}
                             />
                         </Field>
 
-                        <Field
-                            label="Image URL"
-                            htmlFor="imageUrl"
-                            error={errors.imageUrl?.message}
-                            hint="Optional. Must start with https://"
-                        >
-                            <Input
-                                id="imageUrl"
-                                placeholder="https://example.com/photo.jpg"
-                                {...form.register("imageUrl")}
-                            />
+                        <Field label="Currency" htmlFor="currency" error={errors.currency?.message}>
+                            <Input id="currency" placeholder="USD" {...form.register("currency")} />
+                        </Field>
+
+                        <Field label="Best time to visit" htmlFor="bestTimeToVisit" error={errors.bestTimeToVisit?.message}>
+                            <Input id="bestTimeToVisit" placeholder="November to March" {...form.register("bestTimeToVisit")} />
+                        </Field>
+
+                        <Field label="Recommended duration" htmlFor="recommendedDuration" error={errors.recommendedDuration?.message}>
+                            <Input id="recommendedDuration" placeholder="3 days" {...form.register("recommendedDuration")} />
+                        </Field>
+
+                        <Field label="Activities" htmlFor="activities" error={errors.activities?.message} hint="One per line.">
+                            <Textarea id="activities" rows={4} placeholder={"Swimming\nSunset watching"} {...form.register("activities")} />
+                        </Field>
+
+                        <Field label="Travel tips" htmlFor="travelTips" error={errors.travelTips?.message} hint="One per line.">
+                            <Textarea id="travelTips" rows={4} placeholder={"Book hotels early\nCarry cash"} {...form.register("travelTips")} />
                         </Field>
                     </div>
                 </div>
 
                 <div className="flex items-center justify-end gap-2 border-t bg-muted/40 px-6 py-3">
-                    <Button
-                        type="button"
-                        variant="outline"
-                        nativeButton={false}
-                        render={<Link href="/dashboard" />}
-                    >
+                    <Button type="button" variant="outline" nativeButton={false} render={<Link href="/dashboard" />}>
                         Cancel
                     </Button>
                     <Button type="submit" disabled={loading}>

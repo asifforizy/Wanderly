@@ -5,11 +5,18 @@ import { revalidatePath } from "next/cache";
 
 export type CreateDestinationPayload = {
   name: string;
-  description: string;
   country: string;
-  city: string;
-  price?: number;
-  imageUrl?: string;
+  location: string;
+  shortDescription: string;
+  fullDescription: string;
+  category: string;
+  estimatedBudget: number;
+  currency: string;
+  bestTimeToVisit: string;
+  recommendedDuration: string;
+  activities: string[];
+  travelTips: string[];
+  imageUrl: string;
 };
 
 export async function createDestination(payload: CreateDestinationPayload) {
@@ -30,12 +37,14 @@ export async function createDestination(payload: CreateDestinationPayload) {
           Authorization: `Bearer ${token}`,
           Cookie: cookieStore.toString(),
         },
+        // If Postman only works with the wrapper, use: JSON.stringify({ data: payload })
         body: JSON.stringify(payload),
         cache: "no-store",
       }
     );
 
     const data = await res.json().catch(() => null);
+    console.log("CREATE DESTINATION:", res.status, JSON.stringify(data)); // remove when it works
 
     if (!res.ok || !data?.success) {
       return {

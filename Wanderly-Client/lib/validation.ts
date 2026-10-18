@@ -69,26 +69,45 @@ export const ResetPasswordZodSchema = z
     path: ["confirmPassword"],
   });
 
+export const DESTINATION_CATEGORIES = [
+  "BEACH",
+  "MOUNTAIN",
+  "CITY",
+  "CULTURAL",
+  "ADVENTURE",
+  "NATURE",
+] as const;
+
 export const CreateDestinationSchema = z.object({
   name: z
     .string()
-    .min(3, "Name must be at least 3 characters")
-    .max(100, "Name must be at most 100 characters"),
-  description: z
-    .string()
-    .min(10, "Description must be at least 10 characters")
-    .max(2000, "Description is too long"),
+    .min(3, "At least 3 characters")
+    .max(100, "Max 100 characters"),
   country: z.string().min(2, "Country is required"),
-  city: z.string().min(2, "City is required"),
-  // kept as a string in the form, converted to a number in onSubmit
-  price: z
+  location: z.string().min(2, "Location is required"),
+  shortDescription: z
     .string()
-    .refine((v) => v === "" || (!isNaN(Number(v)) && Number(v) >= 0), {
-      message: "Price must be a positive number",
-    }),
-  imageUrl: z.string().refine((v) => v === "" || /^https?:\/\//.test(v), {
-    message: "Enter a valid image URL (https://...)",
-  }),
+    .min(10, "At least 10 characters")
+    .max(200, "Max 200 characters"),
+  fullDescription: z
+    .string()
+    .min(30, "At least 30 characters")
+    .max(5000, "Too long"),
+  category: z.string().min(1, "Select a category"),
+  estimatedBudget: z
+    .string()
+    .refine(
+      (v) => v !== "" && !isNaN(Number(v)) && Number(v) >= 0,
+      "Enter a valid budget"
+    ),
+  currency: z.string().min(1, "Currency is required"),
+  bestTimeToVisit: z.string().min(2, "Required"),
+  recommendedDuration: z.string().min(2, "Required"),
+  activities: z.string().min(1, "Add at least one activity"),
+  travelTips: z.string().min(1, "Add at least one tip"),
+  imageUrl: z
+    .string()
+    .regex(/^https?:\/\//, "Enter a valid image URL (https://...)"),
 });
 
 export type CreateDestinationValues = z.infer<typeof CreateDestinationSchema>;

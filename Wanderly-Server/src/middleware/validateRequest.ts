@@ -4,21 +4,23 @@ import { z } from "zod";
 import { AppError } from "../utils/AppError";
 import { catchAsync } from "../utils/catchAsync";
 
-export const validateRequest = (zodSchema: z.ZodObject) => {
-	return catchAsync((req: Request, res: Response, next: NextFunction) => {
-		const payload = req.body ?? {};
+export const validateRequest = (zodSchema: z.ZodType) => {
+  return catchAsync((req: Request, res: Response, next: NextFunction) => {
+    const result = zodSchema.safeParse(req.body ?? {});
 
-		const result = zodSchema.safeParse(payload);
+    if (!result.success) {
+      console.log(result.error.issues);
 
-		if (!result.success) {
-			console.log(result.error);
-			console.log(result.error.issues);
+      const issue = result.error.issues[0];
+      const field = issue?.path.join(".");
 
-			throw new AppError(httpStatus.BAD_REQUEST, result.error.issues[0]?.message ?? "Validation failed");
-		}
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        field ? `${field}: ${issue?.message}` : issue?.message ?? "Validation failed"
+      );
+    }
 
-		req.body = result.data;
-
-		next();
-	});
+    req.body = result.data;
+    next();
+  });
 };
