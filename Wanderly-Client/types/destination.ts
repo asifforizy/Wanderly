@@ -1,19 +1,14 @@
 export type Destination = {
   id: string;
-  name?: string;
-  title?: string;
-  description?: string;
-  location?: string;
-  country?: string;
-  city?: string;
-  price?: number;
-  rating?: number;
-  imageUrl?: string;
-  image?: string;
-  images?: string[];
+  name: string;
+  country: string;
+  location: string;
+  shortDescription: string;
+  category: string;
+  estimatedBudget: number;
+  currency: string;
+  imageUrl: string;
 };
-
 export type DestinationsResult =
   | { success: true; destinations: Destination[] }
   | { success: false; message: string };
-

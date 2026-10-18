@@ -69,38 +69,33 @@ export const ResetPasswordZodSchema = z
     path: ["confirmPassword"],
   });
 
+// Step 2 explains how to fix this list
 export const DESTINATION_CATEGORIES = [
   "BEACH",
-  "MOUNTAIN",
-  "CITY",
-  "CULTURAL",
-  "ADVENTURE",
+  "MOUNTAINS",
   "NATURE",
+  "CULTURAL",
+  "COASTAL",
+  "CITY",
 ] as const;
 
 export const CreateDestinationSchema = z.object({
-  name: z
-    .string()
-    .min(3, "At least 3 characters")
-    .max(100, "Max 100 characters"),
+  name: z.string().min(2, "At least 2 characters").max(100),
   country: z.string().min(2, "Country is required"),
   location: z.string().min(2, "Location is required"),
   shortDescription: z
     .string()
     .min(10, "At least 10 characters")
     .max(200, "Max 200 characters"),
-  fullDescription: z
-    .string()
-    .min(30, "At least 30 characters")
-    .max(5000, "Too long"),
+  fullDescription: z.string().min(30, "At least 30 characters").max(5000),
   category: z.string().min(1, "Select a category"),
   estimatedBudget: z
     .string()
     .refine(
-      (v) => v !== "" && !isNaN(Number(v)) && Number(v) >= 0,
-      "Enter a valid budget"
+      (v) => /^\d+$/.test(v) && Number(v) > 0,
+      "Enter a whole number greater than 0"
     ),
-  currency: z.string().min(1, "Currency is required"),
+  currency: z.string().length(3, "Use a 3-letter code, e.g. USD"),
   bestTimeToVisit: z.string().min(2, "Required"),
   recommendedDuration: z.string().min(2, "Required"),
   activities: z.string().min(1, "Add at least one activity"),
