@@ -1,6 +1,7 @@
 import { Footer } from '@/components/shared/footer';
 import { Navbar } from '@/components/shared/navbar';
 import { getMe } from '@/service/getMe';
+import { connection } from 'next/server';
 import React from 'react'
 
 const PublicLayout = async (
@@ -10,7 +11,7 @@ const PublicLayout = async (
         children: React.ReactNode
     }
 ) => {
-
+    await connection()
     const user = await getMe();
     return (
         <div>

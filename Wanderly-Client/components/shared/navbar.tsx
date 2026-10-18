@@ -37,18 +37,16 @@ type IUser = {
   success: boolean
   message: string
   data: {
-    profile: {
-      id: string
-      name: string
-      email: string
-      profilePhoto: string
-      phone: string
-      address: string
-      role: string
-      status: string
-      stripeCustomerId: string | null
-      createdAt: string
-      updatedAt: string
+    id: string
+    name: string
+    email: string
+    role: string
+    status: string
+    imageUrl: string
+    emailVerified: boolean
+    registerUser?: {
+      contactNumber: string
+      address: string | null
     }
   }
 }
@@ -58,6 +56,7 @@ type NavbarProps = {
 }
 
 export function Navbar({ user }: NavbarProps) {
+  console.log('navbar user:', user)
   const router = useRouter()
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -136,10 +135,10 @@ export function Navbar({ user }: NavbarProps) {
                   <div className="flex flex-col gap-1 px-1">
                     <div className="px-3 py-1.5">
                       <p className="text-sm font-medium">
-                        {user.data.profile.name}
+                        {user.data.name}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        {user.data.profile.email}
+                        {user.data.email}
                       </p>
                     </div>
 
@@ -232,10 +231,10 @@ export function Navbar({ user }: NavbarProps) {
                 <DropdownMenuContent align="end" className="w-56">
                   <div className="px-2 py-1.5">
                     <p className="text-sm font-medium">
-                      {user.data.profile.name}
+                      {user.data.name}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      {user.data.profile.email}
+                      {user.data.email}
                     </p>
                   </div>
 
