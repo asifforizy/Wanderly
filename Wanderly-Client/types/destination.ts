@@ -16,3 +16,12 @@ export type Destination = {
 export type DestinationsResult =
   | { success: true; destinations: Destination[] }
   | { success: false; message: string };
+
+export type CreateDestinationPayload = {
+  name: string;
+  description: string;
+  country: string;
+  city: string;
+  price?: number;
+  imageUrl?: string;
+};

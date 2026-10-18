@@ -68,3 +68,27 @@ export const ResetPasswordZodSchema = z
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
+
+export const CreateDestinationSchema = z.object({
+  name: z
+    .string()
+    .min(3, "Name must be at least 3 characters")
+    .max(100, "Name must be at most 100 characters"),
+  description: z
+    .string()
+    .min(10, "Description must be at least 10 characters")
+    .max(2000, "Description is too long"),
+  country: z.string().min(2, "Country is required"),
+  city: z.string().min(2, "City is required"),
+  // kept as a string in the form, converted to a number in onSubmit
+  price: z
+    .string()
+    .refine((v) => v === "" || (!isNaN(Number(v)) && Number(v) >= 0), {
+      message: "Price must be a positive number",
+    }),
+  imageUrl: z.string().refine((v) => v === "" || /^https?:\/\//.test(v), {
+    message: "Enter a valid image URL (https://...)",
+  }),
+});
+
+export type CreateDestinationValues = z.infer<typeof CreateDestinationSchema>;
