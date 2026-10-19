@@ -24,7 +24,7 @@ export function JoinBanner() {
                 <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                     <Button
                         size="lg"
-                        className="bg-white text-brand-dark hover:bg-white/90"
+                        className=" bg-white text-brand hover:bg-white/90"
                         nativeButton={false}
                         render={<Link href="/register" />}
                     >
