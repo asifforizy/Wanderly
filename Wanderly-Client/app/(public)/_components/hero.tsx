@@ -16,13 +16,13 @@ export function Hero() {
             <div className="absolute inset-0 -z-10 bg-gradient-to-b from-brand-dark/80 via-brand-dark/45 to-brand-dark/90" />
 
             <div className="mx-auto flex min-h-[560px] max-w-7xl flex-col items-center justify-center px-4 py-20 text-center sm:px-6 lg:px-8">
-                <p className="text-sm font-medium uppercase tracking-widest text-white/80">
+                <p className="text-sm font-medium uppercase tracking-widest text-brand">
                     Welcome to Wanderly
                 </p>
-                <h1 className="mx-auto mt-4 max-w-3xl text-4xl font-bold tracking-tight drop-shadow sm:text-5xl lg:text-6xl">
-                    The whole world, one search away.
+                <h1 className="mx-auto mt-4  text-4xl font-bold tracking-tight text-brand sm:text-5xl lg:text-6xl">
+                    The whole world, <span className="text-brand-light">in your budget</span>
                 </h1>
-                <p className="mx-auto mt-4 max-w-xl text-white/85">
+                <p className="mx-auto mb-40 mt-4 max-w-xl font-medium text-brand-light">
                     Explore destinations shared by real travelers, with budgets, best seasons and tips.
                 </p>
 
