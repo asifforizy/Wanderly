@@ -40,7 +40,7 @@ export function WhyBook() {
                             <p className="mt-1 text-sm text-muted-foreground">{text}</p>
                             <Link
                                 href={href}
-                                className="mt-2 inline-block text-sm font-semibold text-brand hover:underline dark:text-teal-300"
+                                className="mt-2 inline-block text-sm font-semibold text-brand hover:underline dark:text-brand-light"
                             >
                                 {cta}
                             </Link>

@@ -10,9 +10,9 @@ export function SocialProof() {
         <section className="border-t bg-muted/30">
             <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8">
                 <div>
-                    <p className="text-sm font-medium text-sun">Happy travelers</p>
+                    <p className="text-sm font-medium text-brand dark:text-brand-light">Happy travelers</p>
                     <h2 className="mt-1 text-3xl font-bold tracking-tight">Trips planned with confidence</h2>
-                    <blockquote className="mt-6 border-l-4 border-sun pl-4 text-lg text-muted-foreground">
+                    <blockquote className="mt-6 border-l-4 border-brand pl-4 text-lg text-muted-foreground dark:border-brand-light">
                         &ldquo;I found a quiet beach I never would have discovered on my own. The budget and the
                         best-season tips were spot on.&rdquo;
                     </blockquote>
@@ -27,7 +27,10 @@ export function SocialProof() {
                                 <span>{b.value}%</span>
                             </div>
                             <div className="h-2 rounded-full bg-muted">
-                                <div className="h-2 rounded-full bg-brand dark:bg-teal-400" style={{ width: `${b.value}%` }} />
+                                <div
+                                    className="h-2 rounded-full bg-brand dark:bg-brand-light"
+                                    style={{ width: `${b.value}%` }}
+                                />
                             </div>
                         </div>
                     ))}

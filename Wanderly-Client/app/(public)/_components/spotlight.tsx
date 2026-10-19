@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { Calendar, Clock, MapPin } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
+import { Button } from "@/components/ui/button";
 import { Destination } from "@/types/destination";
+
 
 export function Spotlight({ destination: d }: { destination: Destination }) {
     return (
@@ -14,24 +15,24 @@ export function Spotlight({ destination: d }: { destination: Destination }) {
                 </div>
 
                 <div>
-                    <p className="text-sm font-medium text-sun">Featured destination</p>
+                    <p className="text-sm font-medium text-brand dark:text-brand-light">Featured destination</p>
                     <h2 className="mt-1 text-3xl font-bold tracking-tight">{d.name}</h2>
                     <p className="mt-3 text-muted-foreground">{d.shortDescription}</p>
 
                     <ul className="mt-5 space-y-2 text-sm">
                         <li className="flex items-center gap-2">
-                            <MapPin className="size-4 text-brand dark:text-teal-300" />
+                            <MapPin className="size-4 text-brand dark:text-brand-light" />
                             {d.location}, {d.country}
                         </li>
                         {d.recommendedDuration ? (
                             <li className="flex items-center gap-2">
-                                <Clock className="size-4 text-brand dark:text-teal-300" />
+                                <Clock className="size-4 text-brand dark:text-brand-light" />
                                 {d.recommendedDuration}
                             </li>
                         ) : null}
                         {d.bestTimeToVisit ? (
                             <li className="flex items-center gap-2">
-                                <Calendar className="size-4 text-brand dark:text-teal-300" />
+                                <Calendar className="size-4 text-brand dark:text-brand-light" />
                                 Best time: {d.bestTimeToVisit}
                             </li>
                         ) : null}

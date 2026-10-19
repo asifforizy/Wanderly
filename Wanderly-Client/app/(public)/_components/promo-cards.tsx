@@ -8,7 +8,7 @@ const promos = [
         text: "See the newest destinations added by travelers this week.",
         href: "/destinations",
         cta: "Browse destinations",
-        style: "from-brand to-brand-light",
+        style: "from-brand-dark to-brand",
     },
     {
         tag: "Share yours",
@@ -16,7 +16,7 @@ const promos = [
         text: "Add a destination with tips, budget and the best time to visit.",
         href: "/dashboard/create",
         cta: "Create a listing",
-        style: "from-[#b9461a] to-sun",
+        style: "from-brand to-brand-light",
     },
 ];
 

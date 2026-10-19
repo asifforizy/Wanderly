@@ -25,9 +25,7 @@ export function TripsTabs({ destinations }: { destinations: Destination[] }) {
                         key={t.value}
                         type="button"
                         onClick={() => setActive(t.value)}
-                        className={`rounded-full border px-4 py-1.5 text-sm font-medium transition-colors ${active === t.value
-                                ? "border-brand bg-brand text-white"
-                                : "hover:bg-muted"
+                        className={`rounded-full border px-4 py-1.5 text-sm font-medium transition-colors ${active === t.value ? "border-brand bg-brand text-white" : "hover:bg-muted"
                             }`}
                     >
                         {t.label}

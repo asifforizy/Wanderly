@@ -26,7 +26,7 @@ export function NewsletterForm() {
                 placeholder="Email address"
                 className="border-white/20 bg-white/10 text-white placeholder:text-white/50"
             />
-            <Button type="submit" className="bg-sun text-white hover:bg-sun/90">
+            <Button type="submit" className="bg-brand text-white hover:bg-brand-light">
                 Subscribe
             </Button>
         </form>

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Spotlight } from "./spotlight";
-
 import { getDestinations } from "../destinations/_action/get-destination";
+import { Categories } from "./category";
 import { TripsTabs } from "./trip-tabs";
 
 export async function HomeDestinations() {
@@ -28,15 +28,19 @@ export async function HomeDestinations() {
 
     return (
         <>
+            <Categories destinations={list} />
+
             <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
                 <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
                     <div>
-                        <p className="text-sm font-medium text-sun">Trips for every travel style</p>
+                        <p className="text-sm font-medium text-brand dark:text-brand-light">
+                            Trips for every travel style
+                        </p>
                         <h2 className="mt-1 text-3xl font-bold tracking-tight">Popular destinations</h2>
                     </div>
                     <Link
                         href="/destinations"
-                        className="inline-flex items-center gap-1 text-sm font-semibold text-brand hover:underline dark:text-teal-300"
+                        className="inline-flex items-center gap-1 text-sm font-semibold text-brand hover:underline dark:text-brand-light"
                     >
                         See all destinations
                         <ArrowRight className="size-4" />
