@@ -69,15 +69,24 @@ export const ResetPasswordZodSchema = z
     path: ["confirmPassword"],
   });
 
-// Step 2 explains how to fix this list
-export const DESTINATION_CATEGORIES = [
-  "BEACH",
-  "MOUNTAINS",
-  "NATURE",
-  "CULTURAL",
-  "COASTAL",
-  "CITY",
-] as const;
+import {
+  Building2,
+  Landmark,
+  Mountain,
+  TreePine,
+  Umbrella,
+  Waves,
+  type LucideIcon,
+} from "lucide-react";
+
+export const CATEGORIES: { value: string; label: string; icon: LucideIcon }[] = [
+  { value: "BEACH", label: "Beach", icon: Umbrella },
+  { value: "MOUNTAINS", label: "Mountains", icon: Mountain },
+  { value: "NATURE", label: "Nature", icon: TreePine },
+  { value: "CULTURAL", label: "Cultural", icon: Landmark },
+  { value: "COASTAL", label: "Coastal", icon: Waves },
+  { value: "CITY", label: "City", icon: Building2 },
+];
 
 export const CreateDestinationSchema = z.object({
   name: z.string().min(2, "At least 2 characters").max(100),
@@ -106,3 +115,12 @@ export const CreateDestinationSchema = z.object({
 });
 
 export type CreateDestinationValues = z.infer<typeof CreateDestinationSchema>;
+
+export const DESTINATION_CATEGORIES = [
+  "BEACH",
+  "MOUNTAINS",
+  "NATURE",
+  "CULTURAL",
+  "COASTAL",
+  "CITY",
+] as const;

@@ -3,6 +3,11 @@
 @import "shadcn/tailwind.css";
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
+@theme {
+  --color-brand: #0b3a38;
+  --color-brand-light: #145f5a;
+  --color-sun: #ff7a3d;
+}
 
 
 @theme inline {

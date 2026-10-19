@@ -1,37 +1,27 @@
+import { CATEGORIES } from "@/lib/validation";
 import Link from "next/link";
-import { Building2, Landmark, Mountain, TreePine, Umbrella, Waves } from "lucide-react";
 
-import { Card } from "@/components/ui/card";
-
-const categories = [
-  { label: "Beach", icon: Umbrella },
-  { label: "Mountains", icon: Mountain },
-  { label: "Nature", icon: TreePine },
-  { label: "Cultural", icon: Landmark },
-  { label: "Coastal", icon: Waves },
-  { label: "City", icon: Building2 },
-];
 
 export function Categories() {
-  return (
-    <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mb-8 text-center">
-        <h2 className="text-3xl font-bold tracking-tight">Browse by category</h2>
-        <p className="mt-2 text-muted-foreground">Pick the kind of trip you are dreaming of.</p>
-      </div>
+    return (
+        <section className="border-y bg-muted/30">
+            <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+                <p className="text-sm font-medium text-sun">Find your kind of place</p>
+                <h2 className="mt-1 text-3xl font-bold tracking-tight">Destinations for every kind of trip</h2>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-        {categories.map(({ label, icon: Icon }) => (
-          <Link key={label} href="/destinations" className="group">
-            <Card className="items-center gap-3 p-6 text-center transition-all group-hover:-translate-y-1 group-hover:shadow-md">
-              <div className="flex size-12 items-center justify-center rounded-full bg-muted transition-colors group-hover:bg-[#3902FF]/10">
-                <Icon className="size-6" />
-              </div>
-              <span className="text-sm font-medium">{label}</span>
-            </Card>
-          </Link>
-        ))}
-      </div>
-    </section>
-  );
+                <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                    {CATEGORIES.map(({ value, label, icon: Icon }) => (
+                        <Link
+                            key={value}
+                            href={`/destinations?category=${value}`}
+                            className="group flex flex-col items-center gap-3 rounded-2xl bg-brand p-6 text-center text-white transition-all hover:-translate-y-1 hover:bg-brand-light"
+                        >
+                            <Icon className="size-8 text-sun" />
+                            <span className="text-sm font-semibold">{label}</span>
+                        </Link>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
 }

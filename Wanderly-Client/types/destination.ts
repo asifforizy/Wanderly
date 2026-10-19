@@ -8,6 +8,9 @@ export type Destination = {
   estimatedBudget: number;
   currency: string;
   imageUrl: string;
+  bestTimeToVisit?: string;
+  recommendedDuration?: string;
+  activities?: string[];
 };
 export type DestinationsResult =
   | { success: true; destinations: Destination[] }
