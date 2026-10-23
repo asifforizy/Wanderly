@@ -56,7 +56,6 @@ type NavbarProps = {
 }
 
 export function Navbar({ user }: NavbarProps) {
-  console.log('navbar user:', user)
   const router = useRouter()
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
