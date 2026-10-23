@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowRight, MapPin } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -45,10 +46,11 @@ export function DestinationCard({ destination }: { destination: Destination }) {
                     </span>
                 </p>
                 <Button
-                    type="button"
                     size="sm"
                     aria-label={`View details for ${destination.name}`}
                     className="bg-brand text-white hover:bg-brand-light"
+                    nativeButton={false}
+                    render={<Link href={`/destinations/${destination.id}`} />}
                 >
                     View Details
                     <ArrowRight className="size-4" />
