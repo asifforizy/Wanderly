@@ -13,5 +13,5 @@ export type Destination = {
   activities?: string[];
 };
 export type DestinationsResult =
-  | { success: true; destinations: Destination[] }
+  | { success: true; destinations: Destination[]; total?: number }
   | { success: false; message: string };
