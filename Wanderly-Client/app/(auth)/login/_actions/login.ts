@@ -2,21 +2,34 @@
 
 import { cookies } from "next/headers";
 
-export async function loginUser(payload: { email: string; password: string }) {
+export async function loginUser(payload: {
+  email: string;
+  password: string;
+  clientVersion?: number;
+}) {
   const res = await fetch(`${process.env.BACKEND_API_URL}/api/v1/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
+    body: JSON.stringify({
+      email: payload.email,
+      password: payload.password,
+    }),
     cache: "no-store",
   });
 
   const data = await res.json().catch(() => null);
 
   if (!res.ok) {
-    return {
-      success: false as const,
-      message: data?.message || "Login failed",
-    };
+    const message =
+      res.status === 401 || res.status === 404
+        ? "Incorrect email or password."
+        : data?.message || "Login failed";
+
+    if (payload.clientVersion === 2) {
+      return { success: false as const, message };
+    }
+
+    throw new Error(message);
   }
 
   const cookieStore = await cookies();
@@ -39,10 +52,14 @@ export async function loginUser(payload: { email: string; password: string }) {
   }
 
   if (!accessToken) {
-    return {
-      success: false as const,
-      message: "Login worked, but no accessToken was found in the response",
-    };
+    const message =
+      "Login worked, but no accessToken was found in the response";
+
+    if (payload.clientVersion === 2) {
+      return { success: false as const, message };
+    }
+
+    throw new Error(message);
   }
 
   const options = {

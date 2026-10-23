@@ -31,6 +31,7 @@ export function LoginForm() {
 
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const form = useForm<LoginFormValues>({
         resolver: zodResolver(LoginZodSchema),
@@ -43,17 +44,28 @@ export function LoginForm() {
     const onSubmit = async (values: LoginFormValues) => {
         try {
             setLoading(true);
+            setErrorMessage(null);
 
-            await loginUser(values);
+            const result = await loginUser({
+                ...values,
+                clientVersion: 2,
+            });
+
+            if (!result.success) {
+                setErrorMessage(result.message);
+                toast.error(result.message);
+                return;
+            }
+
             toast.success("Login successful");
             router.push("/");
             router.refresh();
         } catch (error) {
-            toast.error(
-                error instanceof Error
-                    ? error.message
-                    : "Login failed"
-            );
+            const message =
+                error instanceof Error ? error.message : "Login failed";
+
+            setErrorMessage(message);
+            toast.error(message);
         } finally {
             setLoading(false);
         }
@@ -135,6 +147,16 @@ export function LoginForm() {
                             </p>
                         )}
                     </div>
+
+                    {errorMessage ? (
+                        <div
+                            role="alert"
+                            aria-live="polite"
+                            className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm font-medium text-destructive"
+                        >
+                            {errorMessage}
+                        </div>
+                    ) : null}
 
                     <Button
                         type="submit"

@@ -13,7 +13,7 @@ export async function googleLogin(payload: { idToken: string }) {
   const data = await res.json().catch(() => null);
 
   if (!res.ok) {
-    return { success: false as const, message: data?.message || "Google login failed" };
+    throw new Error(data?.message || "Google login failed");
   }
 
   // Tokens may come in the response body or in the backend's Set-Cookie headers
@@ -32,10 +32,7 @@ export async function googleLogin(payload: { idToken: string }) {
   }
 
   if (!accessToken) {
-    return {
-      success: false as const,
-      message: "Google login worked, but no accessToken was found in the response",
-    };
+    throw new Error("Google login worked, but no accessToken was found in the response");
   }
 
   const cookieStore = await cookies();
